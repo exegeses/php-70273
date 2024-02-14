@@ -4,7 +4,7 @@
 <img src="https://img.shields.io/badge/PHP-8993BF?style=for-the-badge&logo=php&logoColor=white"><img src="https://img.shields.io/badge/MySQL-4D9EB1?style=for-the-badge&logo=mysql&logoColor=white">
 
 > Curso: Programación Web en PHP y MySQL |    
-> Lunes y Miñercoles 14hs a 16hs |  
+> Lunes y Miércoles 14hs a 16hs |  
 > Desde 14/02 hasta 22/04  |  
 > 20 clases |  
 > Código 70273 |    
