@@ -1,7 +1,7 @@
 ##########################################
 ## BACKUP de Base de datos: catalogo
 ##########################################
-CREATE DATABASE IF NOT EXISTS catalogo DEFAULT CHARACTER SET utf8mb4;
+CREATE DATABASE IF NOT EXISTS catalogo;
 USE catalogo;
 
 -- --------------------------------------------------------
@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS categorias;
 CREATE TABLE categorias (
   idCategoria tinyint unsigned primary key auto_increment NOT NULL,
   catNombre varchar(30) unique NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB ;
 
 --
 -- Volcado de datos para la tabla categorias
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS marcas;
 CREATE TABLE marcas (
   idMarca tinyint unsigned primary key auto_increment NOT NULL,
   mkNombre varchar(30) unique NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 -- Volcado de datos para la tabla marcas
@@ -73,7 +73,7 @@ CREATE TABLE productos (
   prdDescripcion varchar(1000) NOT NULL,
   prdImagen varchar(45) NOT NULL,
   prdActivo boolean NOT NULL default 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 -- Volcado de datos para la tabla productos
