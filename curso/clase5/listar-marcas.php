@@ -1,6 +1,6 @@
 <?php
     include '../layouts/header.php';
-    #### esto va en una función para conactar el server de mysql
+    #### esto va en una función para conectar el server de mysql
     // utilizamos la función mysqli_connect()
     $link = mysqli_connect(
                 'localhost',
