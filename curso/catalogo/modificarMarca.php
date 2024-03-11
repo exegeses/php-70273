@@ -2,19 +2,19 @@
     //require 'config/config.php';
     require 'funciones/conexion.php';
     require 'funciones/marcas.php';
-    $check = agregarMarca();
+    $check = modificarMarca();
     include 'layouts/header.php';
     include 'layouts/nav.php';
 ?>
 
     <main class="container py-4">
-        <h1>Alta de una marca</h1>
+        <h1>Modificación de una marca</h1>
 
 <?php
-        $mensaje = 'No se pudo agregar la marca: '.$_POST['mkNombre'];
+        $mensaje = 'No se pudo modificar la marca: '.$_POST['mkNombre'];
         $css = 'danger';
         if( $check ){
-            $mensaje = 'Marca: '.$_POST['mkNombre'].' agregada correctamente.';
+            $mensaje = 'Marca: '.$_POST['mkNombre'].' modificada correctamente.';
             $css = 'success';
 ?>        
         <div class="alert alert-<?= $css ?> p-4 col-8 mx-auto shadow">
