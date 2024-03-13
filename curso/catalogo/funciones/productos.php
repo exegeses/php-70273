@@ -14,9 +14,20 @@
         return mysqli_query($link, $sql);
     }
 
-
-    function agragarProducto(  )
+    function subirImagen() : string
     {
+
+    }
+
+    function agregarProducto( )
+    {
+        //captura de datos enviados por el form
+        $prdNombre = $_POST['prdNombre'];
+        $prdPrecio = $_POST['prdPrecio'];
+        $idMarca = $_POST['idMarca'];
+        $idCategoria = $_POST['idCategoria'];
+        $prdDescripcion = $_POST['prdDescripcion'];
+        $prdImagen = subirImagen();
 
     }
 /*
