@@ -13,9 +13,10 @@
 <?php
         $mensaje = 'No se pudo agregar la marca: '.$_POST['mkNombre'];
         $css = 'danger';
-        if( $check ){
-            $mensaje = 'Marca: '.$_POST['mkNombre'].' agregada correctamente.';
+        if( $check ) {
+            $mensaje = 'Marca: ' . $_POST['mkNombre'] . ' agregada correctamente.';
             $css = 'success';
+        }
 ?>        
         <div class="alert alert-<?= $css ?> p-4 col-8 mx-auto shadow">
             <?= $mensaje ?>
@@ -23,9 +24,7 @@
                 volver al panel
             </a>
         </div>
-<?php
-        }
-?>
+
 
     </main>
 
