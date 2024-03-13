@@ -13,9 +13,10 @@
 <?php
         $mensaje = 'No se pudo eliminar la marca: '.$_POST['mkNombre'];
         $css = 'danger';
-        if( $check ){
-            $mensaje = 'Marca: '.$_POST['mkNombre'].' eliminada correctamente.';
+        if( $check ) {
+            $mensaje = 'Marca: ' . $_POST['mkNombre'] . ' eliminada correctamente.';
             $css = 'success';
+        }
 ?>        
         <div class="alert alert-<?= $css ?> p-4 col-8 mx-auto shadow">
             <?= $mensaje ?>
@@ -23,9 +24,7 @@
                 volver al panel
             </a>
         </div>
-<?php
-        }
-?>
+
 
     </main>
 
