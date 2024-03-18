@@ -14,12 +14,38 @@
         return mysqli_query($link, $sql);
     }
 
+
+    /**
+     * Función para subir archivos
+     * @return string
+     */
     function subirImagen() : string
     {
+        #### si NO enviaron archivo
+        $prdImagen = 'noDisponible.svg';
 
+        #### si ENVIARON archivo && está todo ok
+        if( $_FILES['prdImagen']['error'] == 0 ) {
+            $dir = 'productos/'; //directorio
+            /* Creamos el directorio solamente si no existe */
+            if (!is_dir($dir)) {
+                // echo 'creamos directorio';
+                mkdir($dir);
+            }
+            //echo 'directorio existente';
+
+            $nombreOriginal = $_FILES['prdImagen']['name'];
+            $tmp = $_FILES['prdImagen']['tmp_name'];
+            $ext = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
+            //renombramos archivo
+            $prdImagen = time() . '.' . $ext;
+            //subimos archivo
+            move_uploaded_file($tmp, $dir . $prdImagen);
+        }
+        return $prdImagen;
     }
 
-    function agregarProducto( )
+    function agregarProducto()
     {
         //captura de datos enviados por el form
         $prdNombre = $_POST['prdNombre'];
@@ -29,6 +55,24 @@
         $prdDescripcion = $_POST['prdDescripcion'];
         $prdImagen = subirImagen();
 
+        $link = conectar();
+        $sql = "INSERT INTO productos
+                    VALUE
+                    ( 
+                        DEFAULT,
+                        '".$prdNombre."',
+                        ".$prdPrecio.",
+                        ".$idMarca.",
+                        ".$idCategoria.",
+                        '".$prdDescripcion."',
+                        '".$prdImagen."',
+                        DEFAULT
+                     )";
+        try {
+            return mysqli_query($link, $sql);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 /*
  *  listarProductos()
