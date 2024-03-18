@@ -14,6 +14,21 @@
         return mysqli_query($link, $sql);
     }
 
+    function verProductoPorID() : array
+    {
+        $idProducto = $_GET['idProducto'];
+        $link = conectar();
+        $sql = "SELECT *
+                    FROM productos as p 
+                    JOIN marcas as m
+                      ON p.idMarca = m.idMarca
+                    JOIN categorias as c
+                      ON p.idCategoria = c.idCategoria
+                  WHERE idProducto = ".$idProducto;
+        $resultado = mysqli_query($link, $sql);
+        return  mysqli_fetch_assoc( $resultado );
+    }
+
 
     /**
      * Función para subir archivos
@@ -76,7 +91,7 @@
     }
 /*
  *  listarProductos()
- *  varProductoPorID()
+ *  verProductoPorID()
  *  agragarProducto()
  *  modificarProducto()
  *  eliminarProductos()
