@@ -36,8 +36,19 @@
      */
     function subirImagen() : string
     {
-        #### si NO enviaron archivo
+        /*
+        #### si NO enviaron archivo en formAgregar
         $prdImagen = 'noDisponible.svg';
+
+        #### si NO enviaron archivo en formModificar
+        if ( isset($_POST['imgActual']) ){
+            $prdImagen = $_POST['imgActual'];
+        }*/
+        ##### usando un termario
+        //$prdImagen = isset($_POST['imgActual']) ? $_POST['imgActual'] : 'noDisponible.svg';
+
+        ##### usando ?? (null coalessing)
+        $prdImagen = $_POST['imgActual'] ?? 'noDisponible.svg';
 
         #### si ENVIARON archivo && está todo ok
         if( $_FILES['prdImagen']['error'] == 0 ) {
@@ -89,6 +100,35 @@
             return false;
         }
     }
+
+    function modificarProducto() : bool
+    {
+        //captura de datos enviados por el form
+        $prdNombre = $_POST['prdNombre'];
+        $prdPrecio = $_POST['prdPrecio'];
+        $idMarca = $_POST['idMarca'];
+        $idCategoria = $_POST['idCategoria'];
+        $prdDescripcion = $_POST['prdDescripcion'];
+        $prdImagen = subirImagen();
+        $idProducto = $_POST['idProducto'];
+
+        $link = conectar();
+        $sql = "UPDATE productos
+                    SET 
+                        prdNombre   = '".$prdNombre."',
+                        prdPrecio   = ".$prdPrecio.",
+                        idMarca     = ".$idMarca.",
+                        idCategoria = ".$idCategoria.",
+                        prdDescripcion = '".$prdDescripcion."',
+                        prdImagen   = '".$prdImagen."'
+                    WHERE idProducto = ".$idProducto;
+        try {
+            return mysqli_query($link, $sql);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
 /*
  *  listarProductos()
  *  verProductoPorID()
