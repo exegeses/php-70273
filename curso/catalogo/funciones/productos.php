@@ -2,6 +2,39 @@
 
 /*### crud de productos ###*/
 
+    function busqueda() : array
+    {
+        $search['search'] = $_GET['search'] ?? '';
+        $search['idMarca'] = $_GET['idMarca'] ?? '';
+        $search['idCategoria'] = $_GET['idCategoria'] ?? '';
+
+        return $search;
+    }
+
+    function buscarProductos() : mysqli_result
+    {
+        $search = busqueda();
+        $link = conectar();
+        $sql = "SELECT *
+                        FROM productos as p 
+                        JOIN marcas as m
+                          ON p.idMarca = m.idMarca
+                        JOIN categorias as c
+                          ON p.idCategoria = c.idCategoria
+                  WHERE prdNombre LIKE '%".$search['search']."%'";
+
+    //Sólo concatenamos idMarca si hay un valor distinto de vacío
+        if( $search['idMarca'] != '' ){
+            $sql .= " AND p.idMarca = ".$search['idMarca'];
+        }
+    //Sólo concatenamos idCategoria si hay un valor distinto de vacío
+        if( $search['idCategoria'] != '' ){
+            $sql .= " AND p.idCategoria = ".$search['idCategoria'];
+        }
+
+        return mysqli_query($link, $sql);
+    }
+
     function listarProductos() : mysqli_result
     {
         $link = conectar();
@@ -121,6 +154,19 @@
                         idCategoria = ".$idCategoria.",
                         prdDescripcion = '".$prdDescripcion."',
                         prdImagen   = '".$prdImagen."'
+                    WHERE idProducto = ".$idProducto;
+        try {
+            return mysqli_query($link, $sql);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    function eliminarProducto() : bool
+    {
+        $idProducto = $_POST['idProducto'];
+        $link = conectar();
+        $sql = "DELETE FROM productos
                     WHERE idProducto = ".$idProducto;
         try {
             return mysqli_query($link, $sql);
