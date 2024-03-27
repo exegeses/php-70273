@@ -1,16 +1,18 @@
 <?php
+
     require 'config/config.php';
     require 'funciones/autenticacion.php';
         autenticar();
+        noAdmin();
     require 'funciones/conexion.php';
-    require 'funciones/categorias.php';
-    $categorias = listarCategorias();
+    require 'funciones/usuarios.php';
+    $usuarios = listarUsuarios();
 	include 'layouts/header.php';
 	include 'layouts/nav.php';
 ?>
 
     <main class="container py-4">
-        <h1>Panel de administración de categorías</h1>
+        <h1>Panel de administración de usuarios</h1>
 
         <a href="admin.php" class="btn btn-outline-secondary my-2">
             Volver a dashboard
@@ -20,35 +22,39 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Categoría</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
                     <th colspan="2">
-                        <a href="" class="btn btn-outline-secondary">
+                        <a href="formAgregarUsuario.php" class="btn btn-outline-secondary">
                             Agregar
                         </a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-    <?php
-                while( $categoria = mysqli_fetch_assoc( $categorias ) ){
-    ?>
+<?php
+        while ($usuario = mysqli_fetch_assoc($usuarios)) {
+?>
                 <tr>
-                    <td><?= $categoria['idCategoria'] ?></td>
-                    <td><?= $categoria['catNombre'] ?></td>
+                    <td><?= $usuario['idUsuario'] ?></td>
+                    <td><?= $usuario['nombre'] ?></td>
+                    <td><?= $usuario['apellido'] ?></td>
+                    <td><?= $usuario['email'] ?></td>
                     <td>
-                        <a href="" class="btn btn-outline-secondary">
+                        <a href="formModificarUsuario.php?idUsuario=<?= $usuario['idUsuario'] ?>" class="btn btn-outline-secondary">
                             Modificar
                         </a>
                     </td>
                     <td>
-                        <a href="" class="btn btn-outline-secondary">
+                        <a href="formEliminarUsuario.php?idUsuario=<?= $usuario['idUsuario'] ?>" class="btn btn-outline-secondary">
                             Eliminar
                         </a>
                     </td>
                 </tr>
-    <?php
-                }
-    ?>
+<?php
+        }
+?>
             </tbody>
         </table>
 

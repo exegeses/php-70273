@@ -26,3 +26,13 @@
             return false;
         }
     }
+
+    function listarUsuarios() : mysqli_result
+    {
+        $link = conectar();
+        $sql = "SELECT idUsuario, nombre, apellido, email, 
+                       idRol
+                  FROM usuarios
+                  WHERE activo = 1";
+        return mysqli_query($link, $sql);
+    }

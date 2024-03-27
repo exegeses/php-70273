@@ -1,5 +1,5 @@
 <?php
-    //require 'config/config.php';
+    require 'config/config.php';
     include 'layouts/header.php';
     include 'layouts/nav.php';
 ?>
@@ -26,7 +26,12 @@
 
 <?php
         if( isset( $_GET['error'] ) ){
-        $mensaje = 'Nombre de usuario y/o clave incorrectos'  
+
+            $mensaje = match( $_GET['error'] ){
+                '1' => 'Nombre de usuario y/o clave incorrectos',
+                '2' => 'Debe loguerse para ingresar a sistema',
+                default => 'Otro mensaje'
+            };
 ?>    
         <div class="alert alert-danger p-4 col-8 mx-auto shadow">
             <?= $mensaje ?>
