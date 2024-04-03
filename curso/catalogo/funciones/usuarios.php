@@ -37,6 +37,19 @@
         return mysqli_query($link, $sql);
     }
 
+    function verUsuarioPorID() : array
+    {
+        $idUsuario = $_GET['idUsuario'];
+        $link = conectar();
+        $sql = "SELECT idUsuario, nombre, apellido, email, 
+                       idRol
+                  FROM usuarios
+                  WHERE activo = 1
+                    AND idUsuario = ".$idUsuario;
+        $resultado = mysqli_query($link, $sql);
+        return mysqli_fetch_assoc($resultado);
+    }
+
     function modificarClave() : bool
     {
         //Capturamos la clave actual sin encriptar
@@ -73,6 +86,28 @@
         $sql = "UPDATE usuarios
                     SET clave = '".$claveHash."'
                   WHERE idUsuario = ".$_SESSION['idUsuario'];
+        try {
+            return mysqli_query($link, $sql);
+        }catch (Exception $e){
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    function modificarUsuario() : bool
+    {
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $email = $_POST['email'];
+        $idRol = $_POST['idRol'];
+        $idUsuario = $_POST['idUsuario'];
+        $link = conectar();
+        $sql = "UPDATE usuarios 
+                    SET nombre = '".$nombre."',
+                        apellido = '".$apellido."',
+                        email = '".$email."',
+                        idRol = ".$idRol."
+                    WHERE idUsuario = ".$idUsuario;
         try {
             return mysqli_query($link, $sql);
         }catch (Exception $e){
