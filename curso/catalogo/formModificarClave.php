@@ -45,10 +45,19 @@
             </form>
         </div>
 
+<?php
+        if( isset($_GET['error']) ){
+            $mensaje = match ( $_GET['error'] ) {
+                '1'=>'La contraseña enviada es incorrecta',
+                '2'=>'La contraseña nueva y la repetida no coinciden'
+            };
+?>
             <div class="alert alert-danger p-4 col-8 mx-auto shadow">
-                <?= 'mensaje' ?>
+                <?= $mensaje ?>
             </div>
-
+<?php
+        }
+?>
         <script>
             let form = document.querySelector('.validarForm');
             let clave = document.querySelector('#clave');
