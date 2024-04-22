@@ -18,9 +18,13 @@
                 <input type="password" name="clave"
                        class='form-control' id="clave" required>
                 <br>
-                <button class="btn btn-dark my-2 px-4">
-                    Ingresar
-                </button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-dark my-2 px-4">
+                        Ingresar
+                    </button>
+                    <a href="reset-pw-step1.php">Reestablecer contraseña</a>
+                </div>
+
             </form>
         </div>
 

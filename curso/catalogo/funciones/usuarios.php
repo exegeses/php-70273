@@ -115,3 +115,111 @@
             return false;
         }
     }
+
+/**
+ *  generar una cadena de caracteres aleatoria
+ * */
+function passwordGenerator( int $length = 16 ) : string
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $claveGenerada = '';
+    for( $n = 0; $n < $length; $n ++ ){
+        $claveGenerada .= $characters[ rand(0, $charactersLength - 1) ];
+    }
+    return $claveGenerada;
+}
+
+function checkEmailReset( $email ) : bool
+{
+    /* Chequear que el e-mail exista en la tabla usuarios */
+    $link = conectar();
+    $sql = "SELECT 1 FROM usuarios
+                WHERE email = '".$email."'";
+    $resultado = mysqli_query($link, $sql);
+    return mysqli_num_rows($resultado);
+}
+function saveCodigo( string $code ) : bool
+{
+    $email = $_POST['email'];
+    $link = conectar();
+    $sql = "INSERT INTO password_reset
+                VALUE
+                    ( 
+                        DEFAULT,
+                        '".$code."',
+                        '".$email."',
+                        DEFAULT,
+                        DEFAULT
+                    )";
+    try {
+        return mysqli_query($link, $sql);
+    }catch (Exception $e){
+        echo $e->getMessage();
+        return false;
+    }
+}
+
+function resetPWStep2() : bool
+{
+    $email = $_POST['email'];
+    //chequear que el email exista
+    if ( !checkEmailReset($email) ){
+        // si no existe
+        header('location: reset-pw-step1.php?error=1');
+        return false;
+    }
+    //generamos código aleatorio
+    $codigo = passwordGenerator(8);
+    //almacenamos código e email en tabla password_reset
+    if ( !saveCodigo( $codigo ) ){
+        return false;
+    }
+    //enviamos email con código
+    $asunto = 'Reestablecer contraseña CatalogoPHP';
+
+    $cuerpo = HTMLMAILHEADDER;
+    $cuerpo .= 'C&oacute;digo: '."<br>";
+    $cuerpo .= '<p style="font-size:32px; margin: 24px auto">'.$codigo. "</p><br>";
+    $cuerpo .= '<img src="https://php-70273.000webhostapp.com/imagenes/m-iso.jpg" style="width: 32px">';
+    $cuerpo .= HTMLMAILFOOTER;
+    //enviamos email
+    if( !enviarMail($asunto, $email, $cuerpo) ){
+        return false;
+    }
+    return  true;
+}
+
+function resetPWStep3() : bool
+{
+    //chequear código !!!!  email +  activo = 1
+    $codigo = $_POST['codigo'];
+    $link = conectar();
+    $sql = "SELECT email 
+                FROM password_reset
+                WHERE codigo ='".$codigo."'
+                 AND activo = 1";
+    $resultado = mysqli_query($link, $sql);
+    if( !mysqli_num_rows($resultado) ){
+        return false;
+    }
+    // setear activo = 0
+    $sql = "UPDATE password_reset
+                SET activo = 0
+                WHERE codigo ='".$codigo."'";
+    try {
+        $dato = mysqli_fetch_assoc($resultado);
+        $_SESSION['email'] = $dato['email'];
+        return mysqli_query($link, $sql);
+    }catch (Exception $e){
+        echo $e->getMessage();
+        return false;
+    }
+}
+function resetPWStep4() : bool
+{
+    $email = $_SESSION['email'];
+    $newClave = $_POST['newClave'];
+    $newClave2 = $_POST['newClave2'];
+    //modificamos clave a $email
+}
