@@ -182,6 +182,8 @@ function resetPWStep2() : bool
     $cuerpo .= 'C&oacute;digo: '."<br>";
     $cuerpo .= '<p style="font-size:32px; margin: 24px auto">'.$codigo. "</p><br>";
     $cuerpo .= '<img src="https://php-70273.000webhostapp.com/imagenes/m-iso.jpg" style="width: 32px">';
+    // enlace o qr
+    $cuerpo .= '<a href="http://php-70273.curso:8080/catalogo/reset-pw-step3.php?codigo='.$codigo.'">o haga click aquí</a>';
     $cuerpo .= HTMLMAILFOOTER;
     //enviamos email
     if( !enviarMail($asunto, $email, $cuerpo) ){
@@ -193,7 +195,7 @@ function resetPWStep2() : bool
 function resetPWStep3() : bool
 {
     //chequear código !!!!  email +  activo = 1
-    $codigo = $_POST['codigo'];
+    $codigo = $_GET['codigo'];
     $link = conectar();
     $sql = "SELECT email 
                 FROM password_reset
@@ -221,5 +223,23 @@ function resetPWStep4() : bool
     $email = $_SESSION['email'];
     $newClave = $_POST['newClave'];
     $newClave2 = $_POST['newClave2'];
-    //modificamos clave a $email
+    //Verificamos que ambas claves sean iguales
+    if( $newClave != $newClave2 ){
+        return false;
+    }
+    $pwHash = password_hash($newClave, PASSWORD_DEFAULT);
+    //modificamos clave a al usuario con $email
+    $link = conectar();
+    $sql = "UPDATE usuarios
+              SET 
+                    clave = '".$pwHash."'
+              WHERE email = '".$email."'";
+    try {
+        unset($_SESSION['email']);
+        return mysqli_query($link, $sql);
+    }catch (Exception $e){
+        echo $e->getMessage();
+        return false;
+    }
+
 }
